@@ -1,6 +1,6 @@
 import React, { useState, useEffect, Fragment } from "react";
 import { commerce } from "./lib/commerce";
-import { Products, NavBar, Cart, Checkout } from "./components";
+import { Products, NavBar, Cart, Checkout, ProductPage } from "./components";
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 // import Cart from "./components/Cart/Cart";
 
@@ -20,6 +20,7 @@ import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 //       "https://images.unsplash.com/photo-1542291026-7eec264c27ff?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1950&q=80",
 //   },
 // ];
+console.log(NavBar)
 const App = () => {
   const [products, setProducts] = useState([]);
   const [cart, setCart] = useState({});
@@ -102,6 +103,9 @@ const App = () => {
               onCaptureCheckout={handleCaptureCheckout}
               error={errorMessage}
             />
+          </Route>
+          <Route path="/:id">
+            <ProductPage handleAddToCart={handleAddToCart}/>
           </Route>
         </Switch>
       </Fragment>

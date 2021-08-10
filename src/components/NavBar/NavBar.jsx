@@ -4,8 +4,8 @@ import {
   Toolbar,
   IconButton,
   Badge,
-  MenuItem,
-  Menu,
+  // MenuItem,
+  // Menu,
   Typography,
 } from "@material-ui/core";
 import { ShoppingCart } from "@material-ui/icons";
@@ -35,7 +35,7 @@ const NavBar = ({ cart }) => {
           </Link>
           <div className={classes.grow}></div>
           <div className={classes.button}>
-            {location.pathname === '/' && (<Link to="/cart">
+            {location.pathname !== '/cart' && (<Link to="/cart">
               <IconButton aria-label="Show cart items" color="inherit">
                 <Badge badgeContent={cart.total_unique_items} color="secondary">
                   <ShoppingCart />

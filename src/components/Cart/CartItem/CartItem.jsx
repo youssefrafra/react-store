@@ -8,12 +8,16 @@ import {
   Button,
 } from "@material-ui/core";
 import useStyles from "./styles";
+import { Link } from "react-router-dom";
 
 const CartItem = ({ item, onUpdateProductQty, onRemoveFromCart }) => {
   const classes = useStyles();
+  console.log(item)
   return (
     <Card className={classes.card}>
       <CardMedia
+        component={Link}
+        to={`/${item.product_id}`}
         image={item.media.source}
         alt={item.name}
         className={classes.media}

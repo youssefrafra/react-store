@@ -20,7 +20,7 @@ const AddressForm = ({ checkoutToken, next }) => {
   const [shippingSubdivision, setShippingSubdivision] = useState("");
   const [shippingOptions, setShippingOptions] = useState([]);
   const [shippingOption, setShippingOption] = useState("");
-
+  const [isMounted, setIsMounted] = useState(false);
   const countries = Object.entries(shippingCountries).map(([code, name]) => ({
     id: code,
     label: name,
@@ -32,8 +32,6 @@ const AddressForm = ({ checkoutToken, next }) => {
     id: shippingOpt.id,
     label: `${shippingOpt.description} - (${shippingOpt.price.formatted_with_symbol})`,
   }));
-
-  //   console.log(shippingOptions);
 
   // Fetching Countries
   const fetchShippingCountries = async (checkoutTokenId) => {
@@ -50,9 +48,10 @@ const AddressForm = ({ checkoutToken, next }) => {
     const { subdivisions } = await commerce.services.localeListSubdivisions(
       countryCode
     );
-
-    setShippingSubdivisions(subdivisions);
-    setShippingSubdivision(Object.keys(subdivisions)[0]);
+    if (isMounted) {
+      setShippingSubdivisions(subdivisions);
+      setShippingSubdivision(Object.keys(subdivisions)[0]);
+    }
   };
 
   //Fetch shipping options
@@ -65,29 +64,37 @@ const AddressForm = ({ checkoutToken, next }) => {
       checkoutTokenId,
       { country, region }
     );
-
-    setShippingOptions(options);
-    setShippingOption(options[0].id);
+    if (isMounted) {
+      setShippingOptions(options);
+      setShippingOption(options[0].id);
+    }
   };
 
   useEffect(() => {
+    setIsMounted(true);
     shippingSubdivision &&
       fetchShippingOptions(
         checkoutToken.id,
         shippingCountry,
         shippingSubdivision
       );
+    return () => setIsMounted(false);
   }, [shippingSubdivision]);
 
   useEffect(() => {
+    setIsMounted(true);
     shippingCountry && fetchSubdivisions(shippingCountry);
+    return () => setIsMounted(false);
   }, [shippingCountry]);
 
   useEffect(() => {
+    setIsMounted(true);
     checkoutToken && fetchShippingCountries(checkoutToken.id);
     // checkoutToken && console.log("Token: ", checkoutToken);
+    return () => setIsMounted(false);
   }, []);
 
+  // console.log(isMounted);
   return (
     <Fragment>
       <Typography variant="h6" gutterBottom>
